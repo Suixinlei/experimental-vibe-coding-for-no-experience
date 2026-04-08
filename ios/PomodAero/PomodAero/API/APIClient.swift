@@ -36,10 +36,9 @@ enum APIError: Error, LocalizedError {
 // but APIClient has no mutable state — binding it to MainActor would force every
 // HTTP call to hop actors and make `.shared` unusable as a default argument.
 nonisolated final class APIClient: Sendable {
-    // For V0.1 we target the iOS simulator talking to a backend running on the host.
-    // iOS 14+ allows HTTP to 127.0.0.1 / localhost without ATS exceptions.
-    // When we ship, this becomes a build-config-provided URL.
-    static let shared = APIClient(baseURL: URL(string: "http://127.0.0.1:3000")!)
+    // For V0.1 we target a backend running on the same LAN as the device.
+    // This should become a build-config-provided URL once we have env-specific configs.
+    static let shared = APIClient(baseURL: URL(string: "http://192.168.30.20:3000")!)
 
     private let baseURL: URL
     private let session: URLSession

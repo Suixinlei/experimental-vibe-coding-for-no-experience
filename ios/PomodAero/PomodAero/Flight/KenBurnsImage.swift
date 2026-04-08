@@ -12,8 +12,15 @@
 
 import SwiftUI
 
+/// Source for the porthole's content. Either a local asset (instant, in-bundle)
+/// or a remote URL (loaded async with a graceful fallback).
+enum KenBurnsSource: Equatable {
+    case asset(String)
+    case remote(URL)
+}
+
 struct KenBurnsImage: View {
-    let url: URL?
+    let source: KenBurnsSource?
     var duration: Double = 24
     var maxScale: CGFloat = 1.18
 
@@ -21,47 +28,54 @@ struct KenBurnsImage: View {
 
     var body: some View {
         GeometryReader { geo in
-            if let url {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: geo.size.width, height: geo.size.height)
-                            .scaleEffect(animating ? maxScale : 1.0)
-                            .offset(
-                                x: animating ? geo.size.width * 0.04 : -geo.size.width * 0.04,
-                                y: animating ? -geo.size.height * 0.03 : geo.size.height * 0.03
-                            )
-                            .onAppear {
-                                // Start the slow ping-pong animation once the image is ready.
-                                withAnimation(
-                                    .easeInOut(duration: duration).repeatForever(autoreverses: true)
-                                ) {
-                                    animating = true
-                                }
-                            }
-                    case .failure:
-                        starryFallback
-                    default:
-                        // Loading state — keep the porthole feeling "closed" instead of showing a spinner.
-                        starryFallback
-                    }
-                }
+            content(in: geo.size)
                 .frame(width: geo.size.width, height: geo.size.height)
                 .clipped()
-            } else {
-                // No URL yet (idle phase): "closed" porthole look.
-                starryFallback
-                    .frame(width: geo.size.width, height: geo.size.height)
-                    .clipped()
+        }
+    }
+
+    @ViewBuilder
+    private func content(in size: CGSize) -> some View {
+        switch source {
+        case .asset(let name):
+            Image(name)
+                .resizable()
+                .scaledToFill()
+                .frame(width: size.width, height: size.height)
+                .modifier(KenBurnsMotion(animating: animating, size: size, maxScale: maxScale))
+                .onAppear { startAnimating() }
+        case .remote(let url):
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: size.width, height: size.height)
+                        .modifier(KenBurnsMotion(animating: animating, size: size, maxScale: maxScale))
+                        .onAppear { startAnimating() }
+                case .failure:
+                    starryFallback
+                default:
+                    // Loading state — keep the porthole feeling "closed" instead of showing a spinner.
+                    starryFallback
+                }
             }
+        case .none:
+            // No source yet (idle phase, no idle hub configured): "closed" porthole look.
+            starryFallback
+        }
+    }
+
+    private func startAnimating() {
+        guard !animating else { return }
+        withAnimation(.easeInOut(duration: duration).repeatForever(autoreverses: true)) {
+            animating = true
         }
     }
 
     /// Starry-night gradient used whenever there's no real image to show:
-    /// idle phase, loading, or network failure. Keeps the porthole feeling
+    /// remote loading, network failure, or no source. Keeps the porthole feeling
     /// "outside-of-the-plane" rather than "loading error".
     private var starryFallback: some View {
         LinearGradient(
@@ -73,5 +87,21 @@ struct KenBurnsImage: View {
             startPoint: .top,
             endPoint: .bottom
         )
+    }
+}
+
+/// Slow ping-pong pan + zoom — extracted so .asset and .remote variants share it.
+private struct KenBurnsMotion: ViewModifier {
+    let animating: Bool
+    let size: CGSize
+    let maxScale: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(animating ? maxScale : 1.0)
+            .offset(
+                x: animating ? size.width * 0.04 : -size.width * 0.04,
+                y: animating ? -size.height * 0.03 : size.height * 0.03
+            )
     }
 }

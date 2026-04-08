@@ -15,6 +15,11 @@ struct FlightView: View {
 
     var onShowLeaderboard: () -> Void = {}
 
+    /// Local asset shown inside the porthole BEFORE a flight is started.
+    /// Visual narrative: still at the HGH gate → take off → destination.
+    /// In Assets.xcassets/HubAirport.imageset/.
+    private static let idleHubAssetName = "HubAirport"
+
     var body: some View {
         ZStack {
             // Cabin wall — a warm, soft beige gradient evokes plane interior lighting.
@@ -88,7 +93,7 @@ struct FlightView: View {
         ZStack {
             // Inner scenery masked by the porthole shape.
             TimelineView(.periodic(from: .now, by: 1)) { context in
-                KenBurnsImage(url: backgroundURL(for: viewModel))
+                KenBurnsImage(source: backgroundSource(for: viewModel))
                     .onChange(of: context.date) { _, newDate in
                         Task { await viewModel.tick(now: newDate) }
                     }
@@ -119,12 +124,17 @@ struct FlightView: View {
         }
     }
 
-    private func backgroundURL(for viewModel: FlightViewModel) -> URL? {
+    private func backgroundSource(for viewModel: FlightViewModel) -> KenBurnsSource? {
         switch viewModel.phase {
         case .boarding(let f), .inFlight(let f, _), .landed(let f, _):
-            return viewModel.currentImageURL ?? f.imageURLs.first
-        default:
+            // During flight: rotate through the destination's photos (loaded remotely).
+            if let url = viewModel.currentImageURL ?? f.imageURLs.first {
+                return .remote(url)
+            }
             return nil
+        case .idle, .loadingFlight, .error:
+            // Pre-flight: show the airport hub from the app bundle (instant, no network).
+            return .asset(Self.idleHubAssetName)
         }
     }
 

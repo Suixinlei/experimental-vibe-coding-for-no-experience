@@ -5,7 +5,7 @@ import { Value } from '@sinclair/typebox/value'
 // they get turned into a strongly-typed object exactly once, here.
 const EnvSchema = t.Object({
   PORT: t.Number({ default: 3000 }),
-  HOST: t.String({ default: '127.0.0.1' }),
+  HOST: t.String({ default: '0.0.0.0' }),
   DATABASE_URL: t.String({ default: './data/app.db' }),
   CORS_ORIGINS: t.String({ default: '*' }),
   LOG_LEVEL: t.Union(
