@@ -108,5 +108,27 @@
       "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1600",
       "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=1600"
     ]
+  },
+  {
+    "code": "AZ1672",
+    "destination": "Florence",
+    "country": "Italy",
+    "duration_h": 13,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1523196082804-1aa0f7b9ba42?w=1600",
+      "https://images.unsplash.com/photo-1578001936170-d3cb41e809d5?w=1600",
+      "https://images.unsplash.com/photo-1568323993156-14d2eeaec2bd?w=1600"
+    ]
+  },
+  {
+    "code": "AZ2051",
+    "destination": "Rome",
+    "country": "Italy",
+    "duration_h": 13,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1576016932814-3bb8f4cdddf3?w=1600",
+      "https://images.unsplash.com/photo-1575230940993-3d585ac5a815?w=1600",
+      "https://images.unsplash.com/photo-1556958553-99a9dff36a7e?w=1600"
+    ]
   }
 ]

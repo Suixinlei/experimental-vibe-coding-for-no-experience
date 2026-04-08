@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url'
 import { Value } from '@sinclair/typebox/value'
 import { t } from 'elysia'
 import { FlightModel, type Flight } from './model.ts'
+import { ensureFlightImageCache } from './image-cache.ts'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const flightsPath = join(here, 'data', 'flights.json')
@@ -28,6 +29,10 @@ const flights: readonly Flight[] = Object.freeze(raw as Flight[])
 console.log(`[flights] loaded ${flights.length} flights from seed`)
 
 export const FlightService = {
+  async primeImageCache(): Promise<void> {
+    await ensureFlightImageCache(flights)
+  },
+
   random(): Flight {
     const idx = Math.floor(Math.random() * flights.length)
     // noUncheckedIndexedAccess forces us to narrow this — flights.length > 0 guaranteed above.
@@ -36,7 +41,7 @@ export const FlightService = {
     return picked
   },
 
-  all(): readonly Flight[] {
-    return flights
+  all(): Flight[] {
+    return [...flights]
   },
 }

@@ -26,6 +26,7 @@ bun.lockb
 *.db-shm
 *.sqlite
 *.sqlite3
+backend/data/flight-images/
 
 # ─── iOS / Xcode ─────────────────────────────────────────
 # Build products

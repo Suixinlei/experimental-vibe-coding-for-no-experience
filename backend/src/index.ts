@@ -8,12 +8,15 @@ import { cors } from '@elysiajs/cors'
 import { env } from './env.ts'
 import { health } from './modules/health/index.ts'
 import { flights } from './modules/flights/index.ts'
+import { FlightService } from './modules/flights/service.ts'
 import { focus } from './modules/focus/index.ts'
 
 const corsOrigins =
   env.CORS_ORIGINS === '*'
     ? true
     : env.CORS_ORIGINS.split(',').map((s) => s.trim()).filter(Boolean)
+
+await FlightService.primeImageCache()
 
 export const app = new Elysia()
   .use(cors({ origin: corsOrigins }))

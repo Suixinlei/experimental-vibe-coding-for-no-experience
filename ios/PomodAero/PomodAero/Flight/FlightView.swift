@@ -39,7 +39,9 @@ struct FlightView: View {
                 ProgressView()
                     .tint(.white)
                     .task {
-                        viewModel = FlightViewModel(identity: identity)
+                        let vm = FlightViewModel(identity: identity)
+                        viewModel = vm
+                        await vm.refreshIdleDestinations()
                     }
             }
         }
@@ -145,9 +147,11 @@ struct FlightView: View {
         VStack(spacing: 6) {
             switch viewModel.phase {
             case .idle:
-                Text("HGH → ???")
-                    .font(.system(.title3, design: .rounded).weight(.medium))
-                    .foregroundStyle(.white.opacity(0.75))
+                TimelineView(.periodic(from: .now, by: 1)) { context in
+                    Text("HGH → \(viewModel.idleDestination(at: context.date).uppercased())")
+                        .font(.system(.title3, design: .rounded).weight(.medium))
+                        .foregroundStyle(.white.opacity(0.75))
+                }
                 Text("25:00")
                     .font(.system(size: 54, weight: .thin, design: .rounded))
                     .monospacedDigit()

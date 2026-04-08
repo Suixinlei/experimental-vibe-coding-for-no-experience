@@ -20,6 +20,21 @@ import SwiftUI
 @Observable
 @MainActor
 final class FlightViewModel {
+    private static let fallbackIdleDestinations = [
+        "Bangkok",
+        "Tokyo",
+        "Singapore",
+        "Paris",
+        "Reykjavik",
+        "New York",
+        "Sydney",
+        "Dubai",
+        "Seoul",
+        "Santorini",
+        "Florence",
+        "Rome",
+    ]
+
     // MARK: - State machine
 
     enum Phase: Equatable {
@@ -38,6 +53,7 @@ final class FlightViewModel {
 
     /// The currently displayed background image URL. Rotates every few seconds during flight.
     private(set) var currentImageURL: URL?
+    private(set) var idleDestinations: [String]
 
     // MARK: - Config
 
@@ -57,6 +73,7 @@ final class FlightViewModel {
         self.api = api
         self.identity = identity
         self.remainingSeconds = FlightViewModel.totalFocusSeconds
+        self.idleDestinations = Self.fallbackIdleDestinations
     }
 
     // MARK: - Intents
@@ -113,6 +130,23 @@ final class FlightViewModel {
         remainingSeconds = Self.totalFocusSeconds
     }
 
+    func refreshIdleDestinations() async {
+        do {
+            let flights = try await api.allFlights()
+            let destinations = flights.map(\.destination)
+            let uniqueDestinations = destinations.reduce(into: [String]()) { acc, destination in
+                if !acc.contains(destination) {
+                    acc.append(destination)
+                }
+            }
+            if !uniqueDestinations.isEmpty {
+                idleDestinations = uniqueDestinations
+            }
+        } catch {
+            // Keep the fallback list; idle copy should never block the main flow.
+        }
+    }
+
     // MARK: - Private
 
     private func landed(flight: Flight, startedAt: Date) async {
@@ -139,5 +173,11 @@ final class FlightViewModel {
         let m = remainingSeconds / 60
         let s = remainingSeconds % 60
         return String(format: "%02d:%02d", m, s)
+    }
+
+    func idleDestination(at date: Date) -> String {
+        guard !idleDestinations.isEmpty else { return "???" }
+        let index = Int(date.timeIntervalSinceReferenceDate / 5) % idleDestinations.count
+        return idleDestinations[index]
     }
 }

@@ -66,6 +66,10 @@ nonisolated final class APIClient: Sendable {
         try await get(path: "/flights/random", responseType: Flight.self)
     }
 
+    func allFlights() async throws -> [Flight] {
+        try await get(path: "/flights", responseType: [Flight].self)
+    }
+
     func createSession(_ body: SessionCreateBody) async throws -> APISession {
         try await post(path: "/sessions", body: body, responseType: APISession.self)
     }
