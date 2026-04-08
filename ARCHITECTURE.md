@@ -5,7 +5,17 @@
 
 ## 现状
 
-**项目尚未落地任何代码**。本文件作为骨架先行写入，随着业务域的建立再填充。
+Monorepo，含两个顶层目录：
+
+| 目录 | 内容 | 技术栈 |
+|---|---|---|
+| [`ios/`](./ios/) | 原生 iOS App | Swift + SwiftUI（待 Xcode 装完后生成工程） |
+| [`backend/`](./backend/) | HTTP API + 数据持久化 | Bun + Elysia + bun:sqlite |
+| [`docs/`](./docs/) | 仓库知识库（system of record） | markdown |
+
+两个产物之间的契约通过 backend 暴露的 **OpenAPI spec**（由 `@elysiajs/openapi` 自动生成）传递。iOS 端从该 spec 生成 Swift 客户端，而非手写。
+
+业务域尚未落地，仅有一个 `health` 模块作为脚手架样板。
 
 ## 分层模型（目标状态）
 

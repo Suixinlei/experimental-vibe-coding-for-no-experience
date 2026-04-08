@@ -17,11 +17,19 @@
 
 ## 当前评分
 
-_项目尚未落地代码，所有格子为 0。_
+backend 已起脚手架（health module 三件套齐全 + migration runner + OpenAPI 自动出文档）。
+iOS 工程尚未生成。
 
 | Domain \ Layer | Types | Config | Repo | Service | Runtime | UI |
 |---|---|---|---|---|---|---|
-| _(none yet)_ | – | – | – | – | – | – |
+| backend / health | 3 | 3 | – | 3 | 3 | – |
+| backend / infra (db, env, migrate) | 3 | 3 | 3 | – | 3 | – |
+| ios / – | 0 | 0 | 0 | 0 | 0 | 0 |
+
+**说明**：health 模块拿 3 分而非 5 分，因为：
+- 没有单元测试（service 已和 controller 解耦，可补）
+- 没有结构化日志 / 监控
+- 见 [tech-debt-tracker.md](./exec-plans/tech-debt-tracker.md) TD-002
 
 ## 已知技术债
 

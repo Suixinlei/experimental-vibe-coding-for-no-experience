@@ -1,0 +1,2 @@
+# SQLite 数据库文件会落到这个目录。*.db / *.db-* 由 .gitignore 排除，
+# 仅保留这个 .gitkeep 让目录在 git 中存在。

@@ -24,4 +24,7 @@
 |---|---|---|---|---|
 | 001 | 核心信念 | accepted | verified | [core-beliefs.md](./core-beliefs.md) |
 
+> 进行中的工作请去 [`docs/exec-plans/active/`](../exec-plans/active/) 而不是这里。
+> 当前活跃计划：[2026-04-08 bootstrap](../exec-plans/active/2026-04-08-bootstrap.md)
+
 _新增条目时请**按编号递增**，不要复用编号。_

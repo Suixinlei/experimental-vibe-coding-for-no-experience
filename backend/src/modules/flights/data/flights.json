@@ -1,0 +1,112 @@
+[
+  {
+    "code": "CZ3123",
+    "destination": "Bangkok",
+    "country": "Thailand",
+    "duration_h": 4,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=1600",
+      "https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=1600",
+      "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=1600"
+    ]
+  },
+  {
+    "code": "MU5181",
+    "destination": "Tokyo",
+    "country": "Japan",
+    "duration_h": 3,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600",
+      "https://images.unsplash.com/photo-1554797589-7241bb691973?w=1600",
+      "https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=1600"
+    ]
+  },
+  {
+    "code": "CA984",
+    "destination": "Singapore",
+    "country": "Singapore",
+    "duration_h": 5,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1565967511849-76a60a516170?w=1600",
+      "https://images.unsplash.com/photo-1508964942454-1a56651d54ac?w=1600",
+      "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=1600"
+    ]
+  },
+  {
+    "code": "MU567",
+    "destination": "Paris",
+    "country": "France",
+    "duration_h": 12,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1600",
+      "https://images.unsplash.com/photo-1543349689-9a4d426bee8e?w=1600",
+      "https://images.unsplash.com/photo-1522093007474-d86e9bf7ba6f?w=1600"
+    ]
+  },
+  {
+    "code": "CZ309",
+    "destination": "Reykjavik",
+    "country": "Iceland",
+    "duration_h": 13,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1500259783852-0ca9ce8a64dc?w=1600",
+      "https://images.unsplash.com/photo-1529888946425-9b6b5ba4ed28?w=1600",
+      "https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=1600"
+    ]
+  },
+  {
+    "code": "CA985",
+    "destination": "New York",
+    "country": "USA",
+    "duration_h": 14,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=1600",
+      "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1600",
+      "https://images.unsplash.com/photo-1534270804882-6b5048b1c1fc?w=1600"
+    ]
+  },
+  {
+    "code": "MU587",
+    "destination": "Sydney",
+    "country": "Australia",
+    "duration_h": 10,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1600",
+      "https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?w=1600",
+      "https://images.unsplash.com/photo-1494233892892-d9d5d1c06a3b?w=1600"
+    ]
+  },
+  {
+    "code": "HU7985",
+    "destination": "Dubai",
+    "country": "UAE",
+    "duration_h": 9,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1600",
+      "https://images.unsplash.com/photo-1518684079-3c830dcef090?w=1600",
+      "https://images.unsplash.com/photo-1548625149-720134d2c47c?w=1600"
+    ]
+  },
+  {
+    "code": "KE836",
+    "destination": "Seoul",
+    "country": "South Korea",
+    "duration_h": 2,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1600",
+      "https://images.unsplash.com/photo-1617653202545-931a3ca7dee4?w=1600",
+      "https://images.unsplash.com/photo-1534274867514-d5b47ef89ed7?w=1600"
+    ]
+  },
+  {
+    "code": "SQ833",
+    "destination": "Santorini",
+    "country": "Greece",
+    "duration_h": 13,
+    "image_urls": [
+      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1600",
+      "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1600",
+      "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?w=1600"
+    ]
+  }
+]

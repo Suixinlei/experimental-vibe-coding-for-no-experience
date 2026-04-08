@@ -7,7 +7,7 @@
 
 | # | 标题 | 状态 | 负责人 | 链接 |
 |---|---|---|---|---|
-| _(none yet)_ | – | – | – | – |
+| 001 | Focus Flight | draft (V0.1) | human (product) + agents (impl) | [001-focus-flight.md](./001-focus-flight.md) |
 
 ## 模板要素（新建 spec 时参考）
 
