@@ -34,6 +34,7 @@ final class FlightViewModel {
         "Florence",
         "Rome",
     ]
+    private static let idleRotationSeconds = 5
 
     // MARK: - State machine
 
@@ -54,6 +55,7 @@ final class FlightViewModel {
     /// The currently displayed background image URL. Rotates every few seconds during flight.
     private(set) var currentImageURL: URL?
     private(set) var idleDestinations: [String]
+    private(set) var idleFlights: [Flight]
 
     // MARK: - Config
 
@@ -74,6 +76,7 @@ final class FlightViewModel {
         self.identity = identity
         self.remainingSeconds = FlightViewModel.totalFocusSeconds
         self.idleDestinations = Self.fallbackIdleDestinations
+        self.idleFlights = []
     }
 
     // MARK: - Intents
@@ -130,9 +133,19 @@ final class FlightViewModel {
         remainingSeconds = Self.totalFocusSeconds
     }
 
+    func ensureIdleFlightsLoaded() async {
+        while idleFlights.isEmpty && !Task.isCancelled {
+            await refreshIdleDestinations()
+            if idleFlights.isEmpty {
+                try? await Task.sleep(for: .seconds(3))
+            }
+        }
+    }
+
     func refreshIdleDestinations() async {
         do {
             let flights = try await api.allFlights()
+            idleFlights = flights
             let destinations = flights.map(\.destination)
             let uniqueDestinations = destinations.reduce(into: [String]()) { acc, destination in
                 if !acc.contains(destination) {
@@ -176,8 +189,23 @@ final class FlightViewModel {
     }
 
     func idleDestination(at date: Date) -> String {
+        if let flight = idleFlight(at: date) {
+            return flight.destination
+        }
         guard !idleDestinations.isEmpty else { return "???" }
-        let index = Int(date.timeIntervalSinceReferenceDate / 5) % idleDestinations.count
+        let index = Int(date.timeIntervalSinceReferenceDate / Double(Self.idleRotationSeconds)) % idleDestinations.count
         return idleDestinations[index]
+    }
+
+    func idleImageURL(at date: Date) -> URL? {
+        guard let flight = idleFlight(at: date), !flight.imageURLs.isEmpty else { return nil }
+        let bucket = Int(date.timeIntervalSinceReferenceDate / Double(Self.idleRotationSeconds))
+        return flight.imageURLs[bucket % flight.imageURLs.count]
+    }
+
+    private func idleFlight(at date: Date) -> Flight? {
+        guard !idleFlights.isEmpty else { return nil }
+        let bucket = Int(date.timeIntervalSinceReferenceDate / Double(Self.idleRotationSeconds))
+        return idleFlights[bucket % idleFlights.count]
     }
 }

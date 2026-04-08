@@ -25,12 +25,35 @@ struct KenBurnsImage: View {
     var maxScale: CGFloat = 1.18
 
     @State private var animating = false
+    @State private var reveal = false
 
     var body: some View {
         GeometryReader { geo in
-            content(in: geo.size)
-                .frame(width: geo.size.width, height: geo.size.height)
-                .clipped()
+            ZStack {
+                content(in: geo.size)
+                    .id(sourceIdentity)
+                    .transition(.opacity)
+
+                LinearGradient(
+                    colors: [
+                        .clear,
+                        Color.black.opacity(0.08),
+                        Color.black.opacity(0.22)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+            .frame(width: geo.size.width, height: geo.size.height)
+            .clipped()
+            .opacity(reveal ? 1 : 0.82)
+            .animation(.easeInOut(duration: 1.1), value: sourceIdentity)
+            .onAppear {
+                reveal = true
+            }
+            .onChange(of: sourceIdentity) { _, _ in
+                reveal = true
+            }
         }
     }
 
@@ -71,6 +94,17 @@ struct KenBurnsImage: View {
         guard !animating else { return }
         withAnimation(.easeInOut(duration: duration).repeatForever(autoreverses: true)) {
             animating = true
+        }
+    }
+
+    private var sourceIdentity: String {
+        switch source {
+        case .asset(let name):
+            return "asset:\(name)"
+        case .remote(let url):
+            return "remote:\(url.absoluteString)"
+        case .none:
+            return "none"
         }
     }
 

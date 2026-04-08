@@ -6,7 +6,7 @@ import { FlightModel } from './model.ts'
 export const flights = new Elysia({ prefix: '/flights', tags: ['flights'] })
   .get(
     '',
-    () => FlightService.all(),
+    ({ request }) => FlightService.all().map((flight) => withCachedImageURLs(flight, request.url)),
     {
       response: FlightModel.flights,
       detail: {
@@ -18,7 +18,7 @@ export const flights = new Elysia({ prefix: '/flights', tags: ['flights'] })
   )
   .get(
     '/',
-    () => FlightService.all(),
+    ({ request }) => FlightService.all().map((flight) => withCachedImageURLs(flight, request.url)),
     {
       response: FlightModel.flights,
       detail: {
